@@ -19,16 +19,11 @@ fun pendingIntentForTimerNotification(context: Context, requestCode: Int, messag
 
 fun scheduleTimerNotification(context: Context, notifyAt: Long, requestCode: Int, message: String) {
     val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
-    val pendingIntent = pendingIntentForTimerNotification(context, requestCode, message)
-    try {
-        alarmManager.setExactAndAllowWhileIdle(
-            AlarmManager.RTC_WAKEUP,
-            notifyAt,
-            pendingIntent
-        )
-    } catch (e: SecurityException) {
-        Log.i("ScheduleNotification", "SecurityException")
-    }
+    alarmManager.setExactAndAllowWhileIdle(
+        AlarmManager.RTC_WAKEUP,
+        notifyAt,
+        pendingIntentForTimerNotification(context, requestCode, message)
+    )
 }
 
 fun cancelTimerNotification(context: Context, minId: Int, maxId: Int) {
