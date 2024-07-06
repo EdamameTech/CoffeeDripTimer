@@ -110,12 +110,17 @@ fun CoffeeDripTimerScreen(modifier: Modifier = Modifier) {
         val nSteps = brewSteps[roastOfBeans]?.size ?: 0
         for ((i, s) in (brewSteps[roastOfBeans] ?: arrayOf<BrewStepTypes>()).withIndex()) {
             targetAmount += s.step.waterAmountFactor * beans
-            val message = String.format(getString(context, R.string.timer_amount_format), targetAmount) + " " +
-                    if (i < nSteps - 1) {
-                        getString(context, R.string.timer_wait)
-                    } else {
-                        getString(context, R.string.timer_done)
-                    }
+            val message = if (i < nSteps - 1) {
+                String.format(
+                    getString(context, R.string.timer_amount_format_wait),
+                    targetAmount
+                )
+            } else {
+                String.format(
+                    getString(context, R.string.timer_amount_format_done),
+                    targetAmount
+                )
+            }
             if (i == 0) {
                 TimerNotification(context).showTimerNotification(message)
             } else {
