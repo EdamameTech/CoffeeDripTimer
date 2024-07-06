@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">Coffee Drip Timer</string>
+    <string name="amount_of_beans">Amount of beans (g)</string>
+    <string name="medium_roast">Medium roast</string>
+    <string name="dark_roast">Dark roast</string>
+    <string name="step_amount_format">Water to make total: %.1fg</string>
+    <string name="step_wait_format">Wait for %dm%02ds</string>
+    <string name="start">Start</string>
+    <string name="cancel">Cancel</string>
 </resources>
