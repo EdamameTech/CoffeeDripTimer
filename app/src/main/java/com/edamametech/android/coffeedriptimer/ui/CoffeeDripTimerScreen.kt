@@ -102,7 +102,11 @@ fun CoffeeDripTimerScreen(modifier: Modifier = Modifier) {
     fun scheduleNotifications() {
         var notifyAt = startedAt ?: System.currentTimeMillis()
         var targetAmount = 0.0
-        val beans = amountOfBeans.toDouble()
+        val beans = if (amountOfBeans.isNotEmpty()) {
+            amountOfBeans.toDouble()
+        } else {
+            0.0
+        }
         var nSteps = brewSteps[roastOfBeans]?.size ?: 0
         for ((i, s) in (brewSteps[roastOfBeans] ?: arrayOf<BrewStepTypes>()).withIndex()) {
             targetAmount += s.step.waterAmountFactor * beans
@@ -236,7 +240,11 @@ fun BrewStepsDisplay(
     modifier: Modifier = Modifier
 ) {
     var targetAmount = 0.0
-    val beans = amount.toDouble()
+    val beans = if (amount.isNotEmpty()) {
+        amount.toDouble()
+    } else {
+        0.0
+    }
     val nSteps = brewSteps[roast]?.size ?: 0
     var waitUntil = startedAt ?: 0
     Column {
