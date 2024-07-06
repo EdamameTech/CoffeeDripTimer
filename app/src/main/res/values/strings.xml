@@ -7,4 +7,9 @@
     <string name="step_wait_format">Wait for %dm%02ds</string>
     <string name="start">Start</string>
     <string name="cancel">Cancel</string>
+    <string name="timer_channel_name">Dripper timer</string>
+    <string name="timer_channel_description">Notifies when to pour hot water</string>
+    <string name="timer_amount_format">Pour water to %.0f g</string>
+    <string name="timer_wait">and wait</string>
+    <string name="timer_done">and enjoy!</string>
 </resources>

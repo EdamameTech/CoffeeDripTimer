@@ -16,11 +16,16 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.core.content.ContextCompat.getString
 import com.edamametech.android.coffeedriptimer.R
+import com.edamametech.android.coffeedriptimer.notifier.CancelTimerNotification
+import com.edamametech.android.coffeedriptimer.notifier.ScheduleTimerNotification
+import com.edamametech.android.coffeedriptimer.notifier.TimerNotification
 import com.edamametech.android.coffeedriptimer.ui.theme.CoffeeDripTimerTheme
 
 enum class RoastOfBeans(val label: Int) {
@@ -34,7 +39,7 @@ data class BrewStep (
 )
 
 const val waitDurationUnit = 5000L
-// in msec, TODO: 60000L (1 minute) for release
+// in msec, TODO: 60000L (1 minute) for release or e.g. 5000L for debug
 
 enum class BrewStepTypes(val step: BrewStep) {
     SHORT(BrewStep(5.0, 2)),
@@ -60,7 +65,17 @@ fun CoffeeDripTimerScreen(modifier: Modifier = Modifier) {
     var amountOfBeans by rememberSaveable { mutableStateOf("10") }
     var roastOfBeans by rememberSaveable { mutableStateOf(RoastOfBeans.DARK) }
     var startedAt:Long? by rememberSaveable { mutableStateOf(null) }
-    var currentAt:Long? by rememberSaveable { mutableStateOf(null) }
+    var currentAt:Long? by remember { mutableStateOf(null) }
+
+    fun updateAmount(amount: String) {
+        if (Regex("\\d*([.]\\d*)?").matches(amount)) {
+            amountOfBeans = amount
+        }
+    }
+
+    fun updateRoast(roast: RoastOfBeans) {
+        roastOfBeans = roast
+    }
 
     val handler = Handler()
     val updater = object: Runnable {
@@ -74,24 +89,40 @@ fun CoffeeDripTimerScreen(modifier: Modifier = Modifier) {
             currentAt = System.currentTimeMillis()
         }
     }
-
-    fun updateAmount(amount: String) {
-        if (Regex("\\d*([.]\\d*)?").matches(amount)) {
-            amountOfBeans = amount
-        }
-    }
-
-    fun updateRoast(roast: RoastOfBeans) {
-        roastOfBeans = roast
-    }
-
     fun startTimer() {
-        handler.postDelayed(updater, 1000)
         startedAt = System.currentTimeMillis()
+        handler.postDelayed(updater, 1000)
     }
 
     fun cancelTimer() {
         startedAt = null
+    }
+
+    val context = LocalContext.current
+    fun scheduleNotifications() {
+        var notifyAt = startedAt ?: System.currentTimeMillis()
+        var targetAmount = 0.0
+        val beans = amountOfBeans.toDouble()
+        var nSteps = brewSteps[roastOfBeans]?.size ?: 0
+        for ((i, s) in (brewSteps[roastOfBeans] ?: arrayOf<BrewStepTypes>()).withIndex()) {
+            targetAmount += s.step.waterAmountFactor * beans
+            val message = String.format(getString(context, R.string.timer_amount_format), targetAmount) + " " +
+                    if (i < nSteps - 1) {
+                        getString(context, R.string.timer_wait)
+                    } else {
+                        getString(context, R.string.timer_done)
+                    }
+            if (i == 0) {
+                TimerNotification(context).showTimerNotification(message)
+            } else {
+                ScheduleTimerNotification(context, notifyAt, i, message)
+            }
+            notifyAt += s.step.waitDurationFactor * waitDurationUnit
+        }
+    }
+
+    fun cancelNotifications() {
+        CancelTimerNotification(context)
     }
 
     Column {
@@ -118,12 +149,18 @@ fun CoffeeDripTimerScreen(modifier: Modifier = Modifier) {
         )
         Row {
             StartTimerButton(
-                onClick = { startTimer() },
+                onClick = {
+                    startTimer()
+                    scheduleNotifications()
+                          },
                 enabled = (startedAt == null),
                 modifier = Modifier.weight(0.75F)
             )
             CancelTimerButton(
-                onClick = { cancelTimer() },
+                onClick = {
+                    cancelTimer()
+                    cancelNotifications()
+                          },
                 enabled = (startedAt != null),
                 modifier = Modifier.weight(0.25F)
             )
