@@ -23,8 +23,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.content.ContextCompat.getString
 import com.edamametech.android.coffeedriptimer.R
-import com.edamametech.android.coffeedriptimer.notifier.CancelTimerNotification
-import com.edamametech.android.coffeedriptimer.notifier.ScheduleTimerNotification
+import com.edamametech.android.coffeedriptimer.notifier.cancelTimerNotification
+import com.edamametech.android.coffeedriptimer.notifier.scheduleTimerNotification
 import com.edamametech.android.coffeedriptimer.notifier.TimerNotification
 import com.edamametech.android.coffeedriptimer.ui.theme.CoffeeDripTimerTheme
 
@@ -107,7 +107,7 @@ fun CoffeeDripTimerScreen(modifier: Modifier = Modifier) {
         } else {
             0.0
         }
-        var nSteps = brewSteps[roastOfBeans]?.size ?: 0
+        val nSteps = brewSteps[roastOfBeans]?.size ?: 0
         for ((i, s) in (brewSteps[roastOfBeans] ?: arrayOf<BrewStepTypes>()).withIndex()) {
             targetAmount += s.step.waterAmountFactor * beans
             val message = String.format(getString(context, R.string.timer_amount_format), targetAmount) + " " +
@@ -119,14 +119,17 @@ fun CoffeeDripTimerScreen(modifier: Modifier = Modifier) {
             if (i == 0) {
                 TimerNotification(context).showTimerNotification(message)
             } else {
-                ScheduleTimerNotification(context, notifyAt, i, message)
+                scheduleTimerNotification(context, notifyAt, i, message)
             }
             notifyAt += s.step.waitDurationFactor * waitDurationUnit
         }
     }
 
     fun cancelNotifications() {
-        CancelTimerNotification(context)
+        val nSteps = brewSteps[roastOfBeans]?.size ?: 0
+        if (nSteps > 1) {
+            cancelTimerNotification(context, 1, nSteps - 1)
+        }
     }
 
     Column {
