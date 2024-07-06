@@ -1,9 +1,7 @@
 import android.os.Handler
-import android.util.Log
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
@@ -207,7 +205,6 @@ fun BrewStepsDisplay(
     Column {
         var remaining = 0L
         for ((i, s) in (brewSteps[roast] ?: arrayOf<BrewStepTypes>()).withIndex()) {
-            Log.d("BrewStepsDisplay", String.format("i:%d s:%s", i, s.toString()))
             targetAmount += s.step.waterAmountFactor * beans
             Text(
                 text = String.format(stringResource(R.string.step_amount_format), targetAmount)
