@@ -1,3 +1,4 @@
+import android.os.Handler
 import android.util.Log
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -61,6 +62,20 @@ fun CoffeeDripTimerScreen(modifier: Modifier = Modifier) {
     var amountOfBeans by rememberSaveable { mutableStateOf("10") }
     var roastOfBeans by rememberSaveable { mutableStateOf(RoastOfBeans.DARK) }
     var startedAt:Long? by rememberSaveable { mutableStateOf(null) }
+    var currentAt:Long? by rememberSaveable { mutableStateOf(null) }
+
+    val handler = Handler()
+    val updater = object: Runnable {
+        override fun run() {
+            if (startedAt != null) {
+                handler.postDelayed(this, 1000)
+                updateCurrentAt()
+            }
+        }
+        private fun updateCurrentAt() {
+            currentAt = System.currentTimeMillis()
+        }
+    }
 
     fun updateAmount(amount: String) {
         if (Regex("\\d*([.]\\d*)?").matches(amount)) {
@@ -73,6 +88,7 @@ fun CoffeeDripTimerScreen(modifier: Modifier = Modifier) {
     }
 
     fun startTimer() {
+        handler.postDelayed(updater, 1000)
         startedAt = System.currentTimeMillis()
     }
 
@@ -97,7 +113,10 @@ fun CoffeeDripTimerScreen(modifier: Modifier = Modifier) {
         }
         BrewStepsDisplay(
             amount = amountOfBeans,
-            roast = roastOfBeans
+            roast = roastOfBeans,
+            startedAt = startedAt,
+            currentAt = currentAt,
+            onComplete = { cancelTimer() }
         )
         Row {
             StartTimerButton(
@@ -176,12 +195,17 @@ fun RoastOfBeansInput(
 fun BrewStepsDisplay(
     amount: String,
     roast: RoastOfBeans,
+    startedAt: Long?,
+    currentAt: Long?,
+    onComplete: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     var targetAmount = 0.0
     val beans = amount.toDouble()
     val nSteps = brewSteps[roast]?.size ?: 0
+    var waitUntil = startedAt ?: 0
     Column {
+        var remaining = 0L
         for ((i, s) in (brewSteps[roast] ?: arrayOf<BrewStepTypes>()).withIndex()) {
             Log.d("BrewStepsDisplay", String.format("i:%d s:%s", i, s.toString()))
             targetAmount += s.step.waterAmountFactor * beans
@@ -189,16 +213,28 @@ fun BrewStepsDisplay(
                 text = String.format(stringResource(R.string.step_amount_format), targetAmount)
             )
             if (i < nSteps - 1) {
-                val remaining = s.step.waitDurationFactor * waitDurationUnit
+                val stepWait = s.step.waitDurationFactor * waitDurationUnit
+                remaining = if (startedAt == null || currentAt == null) {
+                    stepWait
+                } else if (currentAt < waitUntil) {
+                    stepWait
+                } else if (currentAt < waitUntil + stepWait) {
+                    waitUntil + stepWait - currentAt
+                } else {
+                    0L
+                }
                 val min = (remaining + 500) / 1000 / 60
                 val sec = ((remaining + 500) / 1000).rem(60)
                 Text(
                     text = String.format(stringResource(R.string.step_wait_format), min, sec),
                     modifier = Modifier.fillMaxWidth(),
                     textAlign = TextAlign.Right
-
                 )
+                waitUntil += stepWait
             }
+        }
+        if (remaining == 0L) {
+            onComplete()
         }
     }
 }
