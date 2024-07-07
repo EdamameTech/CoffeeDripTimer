@@ -26,6 +26,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.DefaultAlpha
 import androidx.compose.ui.platform.LocalContext
@@ -158,6 +159,7 @@ fun CoffeeDripTimerScreen(modifier: Modifier = Modifier) {
         modifier = Modifier.padding(8.dp)
     ) {
         Row(
+            verticalAlignment = Alignment.Bottom,
             modifier = Modifier.fillMaxWidth()
         ) {
             AmountOfBeansInput(
@@ -166,7 +168,7 @@ fun CoffeeDripTimerScreen(modifier: Modifier = Modifier) {
                 onValueChange = { updateAmount(it) },
                 modifier = Modifier.weight(0.5F)
             )
-            Spacer(modifier = Modifier.width(4.dp))
+            Spacer(modifier = Modifier.width(8.dp))
             RoastOfBeansInput(
                 roast = roastOfBeans,
                 enabled = (startedAt == null),
@@ -266,8 +268,7 @@ fun RoastOfBeansInput(
                         onClick = {
                             onValueChange(x)
                             expanded = false
-                        },
-                        modifier = Modifier.fillMaxWidth()
+                        }
                     )
                 }
             }
