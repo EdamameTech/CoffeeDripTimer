@@ -101,7 +101,11 @@ fun CoffeeDripTimerScreen(modifier: Modifier = Modifier) {
     }
     fun startTimer() {
         startedAt = System.currentTimeMillis()
-        handler.postDelayed(updater, 1000)
+        handler.post(updater)
+    }
+    if (startedAt != null && currentAt == null) {
+        // after a restart of the MainActivity
+        handler.post(updater)
     }
 
     fun cancelTimer() {
