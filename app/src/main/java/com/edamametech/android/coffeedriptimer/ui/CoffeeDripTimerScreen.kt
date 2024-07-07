@@ -220,6 +220,7 @@ fun AmountOfBeansInput(
         label = { Text(stringResource(R.string.amount_of_beans)) },
         onValueChange = onValueChange,
         singleLine = true,
+        textStyle = MaterialTheme.typography.bodyLarge,
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
         shape = RoundedCornerShape(8.dp),
         modifier = modifier
@@ -242,7 +243,10 @@ fun RoastOfBeansInput(
             enabled = enabled,
             onClick = { expanded = true },
             content = {
-                Text(stringResource(roast.label))
+                Text(
+                    stringResource(roast.label),
+                    style = MaterialTheme.typography.bodyLarge,
+                )
             },
             shape = RoundedCornerShape(8.dp),
             modifier = Modifier.fillMaxWidth()
@@ -283,9 +287,15 @@ fun BrewStepsDisplay(
                 .fillMaxWidth()
                 .padding(top = 4.dp, bottom = 4.dp)
         ) {
-            Text(stringResource(R.string.pour_hot_water))
+            Text(
+                stringResource(R.string.pour_hot_water),
+                style = MaterialTheme.typography.titleSmall
+            )
             Spacer(Modifier.weight(1F))
-            Text(stringResource(R.string.step_wait))
+            Text(
+                stringResource(R.string.step_wait),
+                style = MaterialTheme.typography.titleSmall
+            )
         }
         var targetAmount = 0.0
         val beans = if (amount.isNotEmpty()) {
@@ -338,7 +348,8 @@ fun BrewStepsDisplay(
                     )
                     Text(
                         text = String.format(stringResource(R.string.step_amount_format), targetAmount),
-                        color = foregroundColor
+                        color = foregroundColor,
+                        style = MaterialTheme.typography.bodyLarge
                     )
                 }
                 if (i < nSteps - 1) {
@@ -354,7 +365,8 @@ fun BrewStepsDisplay(
                         )
                         Text(
                             text = String.format(stringResource(R.string.step_wait_format), min, sec),
-                            color = foregroundColor
+                            color = foregroundColor,
+                            style = MaterialTheme.typography.bodyLarge
                         )
                     }
 
@@ -379,7 +391,12 @@ fun StartTimerButton(
     Button(
         enabled = enabled,
         onClick = onClick,
-        content = { Text(stringResource(R.string.start)) },
+        content = {
+            Text(
+                stringResource(R.string.start),
+                style = MaterialTheme.typography.labelLarge,
+            )
+        },
         shape = RoundedCornerShape(8.dp),
         modifier = modifier
     )
@@ -394,7 +411,12 @@ fun CancelTimerButton(
     Button(
         enabled = enabled,
         onClick = onClick,
-        content = { Text(stringResource(R.string.cancel)) },
+        content = {
+            Text(
+                stringResource(R.string.cancel),
+                style = MaterialTheme.typography.labelLarge
+            )
+        },
         shape = RoundedCornerShape(8.dp),
         modifier = modifier
     )
