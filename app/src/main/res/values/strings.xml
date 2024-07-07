@@ -3,7 +3,8 @@
     <string name="amount_of_beans">amount (g)</string>
     <string name="medium_roast">Medium roast</string>
     <string name="dark_roast">Dark roast</string>
-    <string name="step_amount_format">Pour hot water to make total: %.1fg</string>
+    <string name="pour_hot_water">Pour hot water to</string>
+    <string name="step_amount_format">make total: %.1fg</string>
     <string name="step_wait_format">Wait for %dm%02ds</string>
     <string name="start">Start</string>
     <string name="cancel">Cancel</string>

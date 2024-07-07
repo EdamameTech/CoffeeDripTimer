@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.icons.Icons
 import androidx.compose.material3.Button
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
@@ -273,9 +274,15 @@ fun BrewStepsDisplay(
         var remaining = 0L
         for ((i, s) in (brewSteps[roast] ?: arrayOf<BrewStepTypes>()).withIndex()) {
             targetAmount += s.step.waterAmountFactor * beans
-            Text(
-                text = String.format(stringResource(R.string.step_amount_format), targetAmount)
-            )
+            Row {
+                Image(
+                    painterResource(R.drawable.kettle),
+                    stringResource(R.string.pour_hot_water)
+                )
+                Text(
+                    text = String.format(stringResource(R.string.step_amount_format), targetAmount)
+                )
+            }
             if (i < nSteps - 1) {
                 val stepWait = s.step.waitDurationFactor * waitDurationUnit
                 remaining = if (startedAt == null || currentAt == null) {
