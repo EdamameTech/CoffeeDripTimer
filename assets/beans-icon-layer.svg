@@ -26,7 +26,7 @@
      units="cm"
      width="24cm"
      inkscape:zoom="0.5"
-     inkscape:cx="158"
+     inkscape:cx="60"
      inkscape:cy="377"
      inkscape:window-width="1467"
      inkscape:window-height="1144"
@@ -51,14 +51,14 @@
      inkscape:groupmode="layer"
      id="layer1">
     <ellipse
-       style="fill:#000000;fill-opacity:1;stroke:none;stroke-width:10.6792;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;stop-color:#000000"
+       style="fill:#000000;fill-opacity:1;stroke:#ffffff;stroke-width:10;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;stop-color:#000000"
        id="path1134-2"
        cx="150"
        cy="130"
-       rx="64.6604"
+       rx="64.659996"
        ry="84.6604" />
     <ellipse
-       style="fill:#000000;fill-opacity:1;stroke:none;stroke-width:10.6792;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;stop-color:#000000"
+       style="fill:#000000;fill-opacity:1;stroke:#ffffff;stroke-width:10;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;stop-color:#000000"
        id="path1134"
        cx="90"
        cy="110"
