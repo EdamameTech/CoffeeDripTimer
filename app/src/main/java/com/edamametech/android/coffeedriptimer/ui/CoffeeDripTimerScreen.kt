@@ -1,9 +1,11 @@
 import android.graphics.drawable.PaintDrawable
 import android.os.Handler
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
@@ -271,6 +273,13 @@ fun BrewStepsDisplay(
     val nSteps = brewSteps[roast]?.size ?: 0
     var waitUntil = startedAt ?: 0
     Column {
+        Row(
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Text(stringResource(R.string.pour_hot_water))
+            Spacer(Modifier.weight(1F))
+            Text(stringResource(R.string.step_wait))
+        }
         var remaining = 0L
         for ((i, s) in (brewSteps[roast] ?: arrayOf<BrewStepTypes>()).withIndex()) {
             targetAmount += s.step.waterAmountFactor * beans
@@ -296,11 +305,18 @@ fun BrewStepsDisplay(
                 }
                 val min = (remaining + 500) / 1000 / 60
                 val sec = ((remaining + 500) / 1000).rem(60)
-                Text(
-                    text = String.format(stringResource(R.string.step_wait_format), min, sec),
+                Row(
                     modifier = Modifier.fillMaxWidth(),
-                    textAlign = TextAlign.Right
-                )
+                    horizontalArrangement = Arrangement.End
+                ){
+                    Image(
+                        painterResource(R.drawable.timer),
+                        stringResource(R.string.step_wait)
+                    )
+                    Text(
+                        text = String.format(stringResource(R.string.step_wait_format), min, sec),
+                    )
+                }
                 waitUntil += stepWait
             }
         }
