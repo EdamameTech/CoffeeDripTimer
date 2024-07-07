@@ -336,7 +336,10 @@ fun BrewStepsDisplay(
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .background(backgroundColor)
+                    .background(
+                        color = backgroundColor,
+                        shape = RoundedCornerShape(8.dp)
+                    )
                     .padding(top = 4.dp, bottom = 4.dp)
             ) {
                 Row(
