@@ -8,13 +8,15 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -157,6 +159,7 @@ fun CoffeeDripTimerScreen(modifier: Modifier = Modifier) {
                 onValueChange = { updateAmount(it) },
                 modifier = Modifier.weight(0.5F)
             )
+            Spacer(modifier = Modifier.width(4.dp))
             RoastOfBeansInput(
                 roast = roastOfBeans,
                 enabled = (startedAt == null),
@@ -181,6 +184,7 @@ fun CoffeeDripTimerScreen(modifier: Modifier = Modifier) {
                 enabled = (startedAt == null),
                 modifier = Modifier.weight(0.75F)
             )
+            Spacer(modifier = Modifier.width(4.dp))
             CancelTimerButton(
                 onClick = {
                     cancelTimer()
@@ -200,7 +204,7 @@ fun AmountOfBeansInput(
     onValueChange: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    TextField(
+    OutlinedTextField(
         value = amount,
         enabled = enabled,
         leadingIcon = { Image(
@@ -212,6 +216,7 @@ fun AmountOfBeansInput(
         onValueChange = onValueChange,
         singleLine = true,
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+        shape = RoundedCornerShape(8.dp),
         modifier = modifier
     )
 }
@@ -234,11 +239,12 @@ fun RoastOfBeansInput(
             content = {
                 Text(stringResource(roast.label))
             },
+            shape = RoundedCornerShape(8.dp),
             modifier = Modifier.fillMaxWidth()
         )
         DropdownMenu(
             expanded = expanded,
-            onDismissRequest = { expanded = false }
+            onDismissRequest = { expanded = false },
         ) {
             for (x in RoastOfBeans.entries) {
                 if (x != roast) {
@@ -247,7 +253,8 @@ fun RoastOfBeansInput(
                         onClick = {
                             onValueChange(x)
                             expanded = false
-                        }
+                        },
+                        modifier = Modifier.fillMaxWidth()
                     )
                 }
             }
@@ -267,7 +274,9 @@ fun BrewStepsDisplay(
 ) {
     Column {
         Row(
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 4.dp, bottom = 4.dp)
         ) {
             Text(stringResource(R.string.pour_hot_water))
             Spacer(Modifier.weight(1F))
@@ -309,37 +318,46 @@ fun BrewStepsDisplay(
                 MaterialTheme.colorScheme.primaryContainer
             }
 
-            Row(
-                modifier = Modifier.fillMaxWidth().background(backgroundColor)
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(backgroundColor)
+                    .padding(top = 4.dp, bottom = 4.dp)
             ) {
-                Image(
-                    painterResource(R.drawable.kettle),
-                    stringResource(R.string.pour_hot_water)
-                )
-                Text(
-                    text = String.format(stringResource(R.string.step_amount_format), targetAmount),
-                    color = foregroundColor
-                )
-            }
-            if (i < nSteps - 1) {
-                val min = (remaining + 500) / 1000 / 60
-                val sec = ((remaining + 500) / 1000).rem(60)
                 Row(
-                    modifier = Modifier.fillMaxWidth().background(backgroundColor),
-                    horizontalArrangement = Arrangement.End
-                ){
+                    modifier = Modifier.fillMaxWidth()
+                ) {
                     Image(
-                        painterResource(R.drawable.timer),
-                        stringResource(R.string.step_wait)
+                        painterResource(R.drawable.kettle),
+                        stringResource(R.string.pour_hot_water)
                     )
                     Text(
-                        text = String.format(stringResource(R.string.step_wait_format), min, sec),
+                        text = String.format(stringResource(R.string.step_amount_format), targetAmount),
                         color = foregroundColor
                     )
                 }
+                if (i < nSteps - 1) {
+                    val min = (remaining + 500) / 1000 / 60
+                    val sec = ((remaining + 500) / 1000).rem(60)
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.End
+                    ){
+                        Image(
+                            painterResource(R.drawable.timer),
+                            stringResource(R.string.step_wait)
+                        )
+                        Text(
+                            text = String.format(stringResource(R.string.step_wait_format), min, sec),
+                            color = foregroundColor
+                        )
+                    }
 
-                waitUntil += stepWait
+                    waitUntil += stepWait
+                }
+
             }
+
         }
         if (startedAt != null && remaining == 0L) {
             onComplete()
@@ -357,6 +375,7 @@ fun StartTimerButton(
         enabled = enabled,
         onClick = onClick,
         content = { Text(stringResource(R.string.start)) },
+        shape = RoundedCornerShape(8.dp),
         modifier = modifier
     )
 }
@@ -371,6 +390,7 @@ fun CancelTimerButton(
         enabled = enabled,
         onClick = onClick,
         content = { Text(stringResource(R.string.cancel)) },
+        shape = RoundedCornerShape(8.dp),
         modifier = modifier
     )
 }
