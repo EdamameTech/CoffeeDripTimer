@@ -50,16 +50,23 @@ class MainActivity : ComponentActivity() {
         val accessNotificationPermission =
             checkSelfPermission(Manifest.permission.ACCESS_NOTIFICATION_POLICY) == PackageManager.PERMISSION_GRANTED
         val postNotificationPermission =
-            checkSelfPermission(Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                checkSelfPermission(Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED
+            } else {
+                true
+            }
         if (!accessNotificationPermission || !postNotificationPermission) {
-            ActivityCompat.requestPermissions(
-                this,
+            val request = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                 arrayOf(
                     Manifest.permission.ACCESS_NOTIFICATION_POLICY,
                     Manifest.permission.POST_NOTIFICATIONS
-                ),
-                REQUEST_PERMISSION_CODE
-            )
+                )
+            } else {
+                arrayOf(
+                    Manifest.permission.ACCESS_NOTIFICATION_POLICY
+                )
+            }
+            ActivityCompat.requestPermissions(this, request, REQUEST_PERMISSION_CODE)
         }
 
         enableEdgeToEdge()
@@ -78,5 +85,4 @@ class MainActivity : ComponentActivity() {
         const val TIMER_CHANNEL_ID = "DRIPPER_TIMER"
         const val REQUEST_PERMISSION_CODE = 42
     }
-
 }
