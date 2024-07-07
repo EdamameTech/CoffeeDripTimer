@@ -357,7 +357,7 @@ fun BrewStepsDisplay(
                         stringResource(R.string.pour_hot_water)
                     )
                     Text(
-                        text = String.format(stringResource(R.string.step_amount_format), targetAmount),
+                        text = " " + String.format(stringResource(R.string.step_amount_format), targetAmount),
                         color = foregroundColor,
                         style = MaterialTheme.typography.bodyLarge
                     )
@@ -374,15 +374,29 @@ fun BrewStepsDisplay(
                             stringResource(R.string.step_wait)
                         )
                         Text(
-                            text = String.format(stringResource(R.string.step_wait_format), min, sec),
+                            text = " " + String.format(stringResource(R.string.step_wait_format), min, sec),
                             color = foregroundColor,
                             style = MaterialTheme.typography.bodyLarge
                         )
                     }
 
                     waitUntil += stepWait
+                } else {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.End
+                    ){
+                        Icon(
+                            painterResource(R.drawable.dripper),
+                            stringResource(R.string.dripper)
+                        )
+                        Text(
+                            text = " " + stringResource(R.string.drain),
+                            color = MaterialTheme.colorScheme.onSurface,
+                            style = MaterialTheme.typography.bodyLarge
+                        )
+                    }
                 }
-
             }
 
         }
