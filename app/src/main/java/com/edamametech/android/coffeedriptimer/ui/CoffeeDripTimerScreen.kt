@@ -1,6 +1,6 @@
-import android.graphics.drawable.PaintDrawable
 import android.os.Handler
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -9,11 +9,10 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.icons.Icons
 import androidx.compose.material3.Button
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
-import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
@@ -22,14 +21,12 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.DefaultAlpha
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat.getString
@@ -268,14 +265,6 @@ fun BrewStepsDisplay(
     onComplete: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    var targetAmount = 0.0
-    val beans = if (amount.isNotEmpty()) {
-        amount.toDouble()
-    } else {
-        0.0
-    }
-    val nSteps = brewSteps[roast]?.size ?: 0
-    var waitUntil = startedAt ?: 0
     Column {
         Row(
             modifier = Modifier.fillMaxWidth()
@@ -284,33 +273,59 @@ fun BrewStepsDisplay(
             Spacer(Modifier.weight(1F))
             Text(stringResource(R.string.step_wait))
         }
+        var targetAmount = 0.0
+        val beans = if (amount.isNotEmpty()) {
+            amount.toDouble()
+        } else {
+            0.0
+        }
+        val nSteps = brewSteps[roast]?.size ?: 0
+        var waitUntil = startedAt ?: 0
         var remaining = 0L
         for ((i, s) in (brewSteps[roast] ?: arrayOf<BrewStepTypes>()).withIndex()) {
             targetAmount += s.step.waterAmountFactor * beans
-            Row {
+
+            var current = false
+            val stepWait = s.step.waitDurationFactor * waitDurationUnit
+            if (startedAt == null || currentAt == null) {
+                remaining = stepWait
+            } else if (currentAt < waitUntil) {
+                remaining = stepWait
+            } else if (currentAt < waitUntil + stepWait && i < nSteps - 1) {
+                remaining = waitUntil + stepWait - currentAt
+                current = true
+            } else {
+                remaining = 0L
+            }
+
+            val foregroundColor = if (!current) {
+                MaterialTheme.colorScheme.onSurface
+            } else {
+                MaterialTheme.colorScheme.primary
+            }
+            val backgroundColor = if (!current) {
+                MaterialTheme.colorScheme.surface
+            } else {
+                MaterialTheme.colorScheme.primaryContainer
+            }
+
+            Row(
+                modifier = Modifier.fillMaxWidth().background(backgroundColor)
+            ) {
                 Image(
                     painterResource(R.drawable.kettle),
                     stringResource(R.string.pour_hot_water)
                 )
                 Text(
-                    text = String.format(stringResource(R.string.step_amount_format), targetAmount)
+                    text = String.format(stringResource(R.string.step_amount_format), targetAmount),
+                    color = foregroundColor
                 )
             }
             if (i < nSteps - 1) {
-                val stepWait = s.step.waitDurationFactor * waitDurationUnit
-                remaining = if (startedAt == null || currentAt == null) {
-                    stepWait
-                } else if (currentAt < waitUntil) {
-                    stepWait
-                } else if (currentAt < waitUntil + stepWait) {
-                    waitUntil + stepWait - currentAt
-                } else {
-                    0L
-                }
                 val min = (remaining + 500) / 1000 / 60
                 val sec = ((remaining + 500) / 1000).rem(60)
                 Row(
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier.fillMaxWidth().background(backgroundColor),
                     horizontalArrangement = Arrangement.End
                 ){
                     Image(
@@ -319,12 +334,14 @@ fun BrewStepsDisplay(
                     )
                     Text(
                         text = String.format(stringResource(R.string.step_wait_format), min, sec),
+                        color = foregroundColor
                     )
                 }
+
                 waitUntil += stepWait
             }
         }
-        if (remaining == 0L) {
+        if (startedAt != null && remaining == 0L) {
             onComplete()
         }
     }
