@@ -9,8 +9,10 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
@@ -177,9 +179,11 @@ fun CoffeeDripTimerScreen(modifier: Modifier = Modifier) {
             roast = roastOfBeans,
             startedAt = startedAt,
             currentAt = currentAt,
-            onComplete = { cancelTimer() }
+            onComplete = { cancelTimer() },
+            modifier = Modifier
+                .verticalScroll(rememberScrollState())
+                .weight(weight = 1F)
         )
-        Spacer(Modifier.weight(1F))
         Row {
             StartTimerButton(
                 onClick = {
@@ -281,7 +285,9 @@ fun BrewStepsDisplay(
     onComplete: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    Column {
+    Column(
+        modifier = modifier
+    ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
