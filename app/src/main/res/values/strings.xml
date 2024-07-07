@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">Coffee Drip Timer</string>
-    <string name="amount_of_beans">Amount of beans (g)</string>
+    <string name="amount_of_beans">amount (g)</string>
     <string name="medium_roast">Medium roast</string>
     <string name="dark_roast">Dark roast</string>
     <string name="step_amount_format">Pour hot water to make total: %.1fg</string>
@@ -11,4 +11,5 @@
     <string name="timer_channel_description">Notifies when to pour hot water</string>
     <string name="timer_amount_format_wait">Pour water to %.0fg and wait</string>
     <string name="timer_amount_format_done">Pour water to %.0fg. Enjoy!</string>
+    <string name="coffee_beans">Coffee beans</string>
 </resources>
