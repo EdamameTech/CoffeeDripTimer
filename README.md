@@ -1,10 +1,10 @@
 # Coffee Drip Timer
-An Android app to track brewing drip coffee
+An Android app to track brewing time to drip coffee
 
 ## Usage
 1. Set the amount of ground coffee beans in the input box at the top left,
-2. Set the roast of the coffee beans with the dropdown menu at the top right,
-3. Tap the Start button at the bottm left, and
+2. Set the roast of the coffee beans with the drop down menu at the top right,
+3. Tap the Start button at the bottom left, and
 4. Follow the instruction to pour hot water over the coffee dripper.
 
 ## Privacy policy
