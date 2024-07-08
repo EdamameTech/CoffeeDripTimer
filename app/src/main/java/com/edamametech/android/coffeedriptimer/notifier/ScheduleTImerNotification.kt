@@ -5,7 +5,6 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.os.Build
-import android.util.Log
 import com.edamametech.android.coffeedriptimer.notifier.TimerReceiver.Companion.MESSAGE
 
 fun pendingIntentForTimerNotification(context: Context, requestCode: Int, message: String = ""): PendingIntent {
