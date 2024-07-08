@@ -13,11 +13,13 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
 import androidx.compose.material3.Button
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -245,7 +247,7 @@ fun RoastOfBeansInput(
     Box(
         modifier = modifier.fillMaxWidth()
     ) {
-        Button(
+        OutlinedButton(
             enabled = enabled,
             onClick = { expanded = true },
             content = {
@@ -264,11 +266,22 @@ fun RoastOfBeansInput(
             for (x in RoastOfBeans.entries) {
                 if (x != roast) {
                     DropdownMenuItem(
-                        text = { Text(stringResource(x.label)) },
+                        text = {
+                            Text(
+                                stringResource(x.label),
+                                color = MaterialTheme.colorScheme.primaryContainer,
+                                style = MaterialTheme.typography.bodyLarge
+                            )
+                        },
                         onClick = {
                             onValueChange(x)
                             expanded = false
-                        }
+                        },
+                        modifier = Modifier
+                            .background(
+                                color = MaterialTheme.colorScheme.primary,
+                                shape = RoundedCornerShape(8.dp)
+                            )
                     )
                 }
             }
