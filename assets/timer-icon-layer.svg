@@ -26,7 +26,7 @@
      units="cm"
      width="24cm"
      inkscape:zoom="0.5"
-     inkscape:cx="364"
+     inkscape:cx="209"
      inkscape:cy="611"
      inkscape:window-width="1467"
      inkscape:window-height="1144"
@@ -52,15 +52,16 @@
      id="layer1">
     <path
        style="fill:none;stroke:#000000;stroke-width:20;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       d="M 49.999998,29.999999 V 59.999996 L 189.99999,179.99999 v 30 H 49.999998 v -30 L 189.99999,59.999996 V 29.999999 Z"
-       id="path3799" />
+       d="M 59.999998,39.999999 V 69.999998 L 179.99999,169.99999 v 30 H 59.999998 v -30 L 179.99999,69.999998 V 39.999999 Z"
+       id="path3799"
+       sodipodi:nodetypes="ccccccccc" />
     <rect
-       style="fill:#000000;stroke:#000000;stroke-width:20;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stop-color:#000000;fill-opacity:1"
+       style="fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:20;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stop-color:#000000"
        id="rect3921"
-       width="139.99998"
-       height="20"
-       x="49.999996"
-       y="189.99998" />
+       width="119.99999"
+       height="19.999994"
+       x="60"
+       y="180" />
     <path
        style="fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:20;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        d="M 119.99999,119.99999 89.999995,89.999995 h 59.999995 z"
