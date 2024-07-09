@@ -10,10 +10,10 @@ An Android app to track brewing time to drip coffee
 ## Privacy policy
 This privacy policy states use of information of the user by a software application, Coffee Drip Timer.
 
-The application does not store any information in the device.
+The application does not collect or store any information.
 
 ## License
-Copyright 2024 by Greensoybean Technologies, under [MIT License](LICENSE).
+Copyright 2024 by Green Soybean Technologies, under [MIT License](LICENSE).
 
 ## Development
 ### Releasing the app
