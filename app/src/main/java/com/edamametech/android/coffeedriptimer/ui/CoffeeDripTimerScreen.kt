@@ -75,6 +75,7 @@ val brewSteps = mapOf(
         BrewStepTypes.SHORT
     )
 )
+const val maxBrewSteps = 4
 
 @Composable
 fun CoffeeDripTimerScreen(modifier: Modifier = Modifier) {
@@ -151,10 +152,7 @@ fun CoffeeDripTimerScreen(modifier: Modifier = Modifier) {
     }
 
     fun cancelNotifications() {
-        val nSteps = brewSteps[roastOfBeans]?.size ?: 0
-        if (nSteps > 1) {
-            cancelTimerNotification(context, 1, nSteps - 1)
-        }
+        cancelTimerNotification(context, 1, maxBrewSteps - 1)
     }
 
     Column(
