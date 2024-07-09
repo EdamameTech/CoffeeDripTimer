@@ -20,7 +20,8 @@
             android:name=".MainActivity"
             android:launchMode="singleTask"
             android:exported="true"
-            android:theme="@style/Theme.CoffeeDripTimer">
+            android:theme="@style/Theme.CoffeeDripTimer"
+            android:windowSoftInputMode="adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
