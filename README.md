@@ -19,8 +19,7 @@ Copyright 2024 by Greensoybean Technologies, under [MIT License](LICENSE).
 ### Releasing the app
 1. Make sure `const val waitDurationUnit` is `60000L` in `app/src/main/java/com/edamametech/android/coffeedriptimer/ui/CoffeeDripTimerScreen.kt`. This can be lowered to, e.g., `5000L` for quicker debugging.
 2. Remove unreferenced resources and debug logs.
-3. Update `android.defaultConfig.versionCode` and `...versionName` in `app/build.gradle.kts`
-4. Test things on debug build
-5. Make the build variant to `release` in Build - Select Build Variant - Build Variants.
-6. Build - Generate Signed App Bundle / APK...
+3. Update `android.defaultConfig.versionCode` and `...versionName` in `app/build.gradle.kts`.
+4. Test things on debug build.
+5. Build - Generate Signed App Bundle / APK... and select release build.
 
