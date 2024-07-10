@@ -29,11 +29,14 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.DefaultAlpha
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat.getString
@@ -214,8 +217,10 @@ fun AmountOfBeansInput(
     onValueChange: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
+    var textValue by remember { mutableStateOf(TextFieldValue(amount)) }
+
     OutlinedTextField(
-        value = amount,
+        value = textValue,
         enabled = enabled,
         label = { Text(stringResource(R.string.amount_of_beans)) },
         leadingIcon = { Image(
@@ -227,12 +232,26 @@ fun AmountOfBeansInput(
             stringResource(R.string.amount_unit),
             style = MaterialTheme.typography.bodyLarge
         )},
-        onValueChange = onValueChange,
+        onValueChange = {
+            textValue = it
+            onValueChange(it.text)
+        },
         singleLine = true,
         textStyle = MaterialTheme.typography.bodyLarge,
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
         shape = RoundedCornerShape(8.dp),
         modifier = modifier
+            .onFocusChanged {
+                if (it.isFocused) {
+                    textValue = textValue.copy(
+                        selection = TextRange(textValue.text.length)
+                    )
+                } else {
+                    textValue = textValue.copy(
+                        composition = null
+                    )
+                }
+            }
     )
 }
 
