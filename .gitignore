@@ -13,6 +13,7 @@
 /captures
 /app/release
 /assets/feature*.png
+/assets/feature*.jpg
 .externalNativeBuild
 .cxx
 local.properties
