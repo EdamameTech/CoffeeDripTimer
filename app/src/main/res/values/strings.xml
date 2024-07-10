@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">Coffee Drip Timer</string>
-    <string name="amount_of_beans">Amount (g)</string>
+    <string name="amount_of_beans">Amount</string>
+    <string name="amount_unit">g</string>
     <string name="medium_roast">Medium roast</string>
     <string name="dark_roast">Dark roast</string>
     <string name="pour_hot_water">Pour hot water to make total</string>

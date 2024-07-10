@@ -13,7 +13,6 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
 import androidx.compose.material3.Button
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
@@ -218,12 +217,16 @@ fun AmountOfBeansInput(
     OutlinedTextField(
         value = amount,
         enabled = enabled,
+        label = { Text(stringResource(R.string.amount_of_beans)) },
         leadingIcon = { Image(
             painterResource(R.drawable.beans),
             stringResource(R.string.coffee_beans),
             alpha = if (enabled) { DefaultAlpha } else { DefaultAlpha * 0.5F }
         ) },
-        label = { Text(stringResource(R.string.amount_of_beans)) },
+        trailingIcon = { Text(
+            stringResource(R.string.amount_unit),
+            style = MaterialTheme.typography.bodyLarge
+        )},
         onValueChange = onValueChange,
         singleLine = true,
         textStyle = MaterialTheme.typography.bodyLarge,
