@@ -87,9 +87,7 @@ fun CoffeeDripTimerScreen(modifier: Modifier = Modifier) {
     var currentAt:Long? by remember { mutableStateOf(null) }
 
     fun updateAmount(amount: String) {
-        if (Regex("\\d*([.]\\d*)?").matches(amount)) {
-            amountOfBeans = amount
-        }
+        amountOfBeans = amount
     }
 
     fun updateRoast(roast: RoastOfBeans) {
@@ -233,8 +231,10 @@ fun AmountOfBeansInput(
             style = MaterialTheme.typography.bodyLarge
         )},
         onValueChange = {
-            textValue = it
-            onValueChange(it.text)
+            if (Regex("\\d*([.]\\d*)?").matches(it.text)) {
+                textValue = it
+                onValueChange(it.text)
+            }
         },
         singleLine = true,
         textStyle = MaterialTheme.typography.bodyLarge,
