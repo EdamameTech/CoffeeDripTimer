@@ -79,6 +79,14 @@ val brewSteps = mapOf(
 )
 const val maxBrewSteps = 4
 
+fun toDoubleOrZero(input: String): Double {
+    return if (input.isNotEmpty() && input != ".") {
+        input.toDouble()
+    } else {
+        0.0
+    }
+}
+
 @Composable
 fun CoffeeDripTimerScreen(modifier: Modifier = Modifier) {
     var amountOfBeans by rememberSaveable { mutableStateOf("10") }
@@ -123,11 +131,7 @@ fun CoffeeDripTimerScreen(modifier: Modifier = Modifier) {
     fun scheduleNotifications() {
         var notifyAt = startedAt ?: System.currentTimeMillis()
         var targetAmount = 0.0
-        val beans = if (amountOfBeans.isNotEmpty()) {
-            amountOfBeans.toDouble()
-        } else {
-            0.0
-        }
+        val beans = toDoubleOrZero(amountOfBeans)
         val nSteps = brewSteps[roastOfBeans]?.size ?: 0
         for ((i, s) in (brewSteps[roastOfBeans] ?: arrayOf<BrewStepTypes>()).withIndex()) {
             targetAmount += s.step.waterAmountFactor * beans
@@ -338,11 +342,7 @@ fun BrewStepsDisplay(
             )
         }
         var targetAmount = 0.0
-        val beans = if (amount.isNotEmpty()) {
-            amount.toDouble()
-        } else {
-            0.0
-        }
+        val beans = toDoubleOrZero(amount)
         val nSteps = brewSteps[roast]?.size ?: 0
         var waitUntil = startedAt ?: 0
         var remaining = 0L
