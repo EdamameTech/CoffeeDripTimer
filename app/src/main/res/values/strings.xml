@@ -12,6 +12,7 @@
     <string name="cancel">Cancel</string>
     <string name="timer_channel_name">Dripper timer</string>
     <string name="timer_channel_description">Notifies when to pour hot water</string>
+    <string name="timer_amount_format_first">Reset scale, pour %.0fg of water, and wait</string>
     <string name="timer_amount_format_wait">Pour water to %.0fg and wait</string>
     <string name="timer_amount_format_done">Pour water to %.0fg. Enjoy!</string>
     <string name="coffee_beans">Coffee beans</string>
