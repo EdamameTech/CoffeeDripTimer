@@ -46,9 +46,9 @@ import com.edamametech.android.coffeedriptimer.notifier.scheduleTimerNotificatio
 import com.edamametech.android.coffeedriptimer.notifier.TimerNotification
 import com.edamametech.android.coffeedriptimer.ui.theme.CoffeeDripTimerTheme
 
-enum class RoastOfBeans(val label: Int) {
-    MEDIUM(R.string.medium_roast),
-    DARK(R.string.dark_roast)
+enum class RoastOfBeans(val label: Int, val adjustWaterAmount: Double) {
+    MEDIUM(R.string.medium_roast, 0.8),
+    DARK(R.string.dark_roast, 1.0)
 }
 
 data class BrewStep (
@@ -131,7 +131,7 @@ fun CoffeeDripTimerScreen(modifier: Modifier = Modifier) {
     fun scheduleNotifications() {
         var notifyAt = startedAt ?: System.currentTimeMillis()
         var targetAmount = 0.0
-        val beans = toDoubleOrZero(amountOfBeans)
+        val beans = toDoubleOrZero(amountOfBeans) * roastOfBeans.adjustWaterAmount
         val nSteps = brewSteps[roastOfBeans]?.size ?: 0
         for ((i, s) in (brewSteps[roastOfBeans] ?: arrayOf<BrewStepTypes>()).withIndex()) {
             targetAmount += s.step.waterAmountFactor * beans
@@ -343,7 +343,7 @@ fun BrewStepsDisplay(
             )
         }
         var targetAmount = 0.0
-        val beans = toDoubleOrZero(amount)
+        val beans = toDoubleOrZero(amount) * roast.adjustWaterAmount
         val nSteps = brewSteps[roast]?.size ?: 0
         var waitUntil = startedAt ?: 0
         var remaining = 0L
