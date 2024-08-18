@@ -57,7 +57,9 @@ data class BrewStep (
 )
 
 const val waitDurationUnit = 60000L
-// in msec, TODO: 60000L (1 minute) for release or e.g. 5000L for debug
+/* in msec, TODO: 60000L (1 minute) for release or e.g. 5000L for debug */
+const val lastStepHighlightDuration = 5000L
+/* 6 seconds */
 
 enum class BrewStepTypes(val step: BrewStep) {
     SHORT(BrewStep(5.0, 2)),
@@ -358,6 +360,9 @@ fun BrewStepsDisplay(
                 remaining = stepWait
             } else if (currentAt < waitUntil + stepWait && i < nSteps - 1) {
                 remaining = waitUntil + stepWait - currentAt
+                current = true
+            } else if (currentAt < waitUntil + lastStepHighlightDuration) {
+                remaining = waitUntil + lastStepHighlightDuration - currentAt
                 current = true
             } else {
                 remaining = 0L
