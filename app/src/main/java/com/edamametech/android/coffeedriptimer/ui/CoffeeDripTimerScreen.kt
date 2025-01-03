@@ -37,6 +37,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat.getString
@@ -281,6 +283,8 @@ fun RoastOfBeansInput(
                 Text(
                     stringResource(roast.label),
                     style = MaterialTheme.typography.bodyLarge,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
                 )
             },
             shape = RoundedCornerShape(8.dp),
@@ -297,7 +301,9 @@ fun RoastOfBeansInput(
                             Text(
                                 stringResource(x.label),
                                 color = MaterialTheme.colorScheme.primaryContainer,
-                                style = MaterialTheme.typography.bodyLarge
+                                style = MaterialTheme.typography.bodyLarge,
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis
                             )
                         },
                         onClick = {
@@ -336,12 +342,18 @@ fun BrewStepsDisplay(
         ) {
             Text(
                 stringResource(R.string.pour_hot_water),
-                style = MaterialTheme.typography.titleSmall
+                style = MaterialTheme.typography.titleSmall,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+                modifier = Modifier.weight(0.5F)
             )
-            Spacer(Modifier.weight(1F))
             Text(
                 stringResource(R.string.step_wait),
-                style = MaterialTheme.typography.titleSmall
+                style = MaterialTheme.typography.titleSmall,
+                textAlign = TextAlign.Right,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+                modifier = Modifier.weight(0.5F)
             )
         }
         var targetAmount = 0.0
@@ -458,6 +470,8 @@ fun StartTimerButton(
             Text(
                 stringResource(R.string.start),
                 style = MaterialTheme.typography.labelLarge,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
             )
         },
         shape = RoundedCornerShape(8.dp),
@@ -477,7 +491,9 @@ fun CancelTimerButton(
         content = {
             Text(
                 stringResource(R.string.cancel),
-                style = MaterialTheme.typography.labelLarge
+                style = MaterialTheme.typography.labelLarge,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
             )
         },
         shape = RoundedCornerShape(8.dp),
