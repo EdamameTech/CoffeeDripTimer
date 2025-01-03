@@ -61,7 +61,7 @@ data class BrewStep (
 const val waitDurationUnit = 60000L
 /* in msec, TODO: 60000L (1 minute) for release or e.g. 5000L for debug */
 const val lastStepHighlightDuration = 5000L
-/* 6 seconds */
+/* 5 seconds */
 
 enum class BrewStepTypes(val step: BrewStep) {
     SHORT(BrewStep(5.0, 2)),
