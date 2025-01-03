@@ -96,6 +96,7 @@ fun CoffeeDripTimerScreen(modifier: Modifier = Modifier) {
     var amountOfBeans by rememberSaveable { mutableStateOf("10") }
     var roastOfBeans by rememberSaveable { mutableStateOf(RoastOfBeans.DARK) }
     var startedAt:Long? by rememberSaveable { mutableStateOf(null) }
+    var configurable:Boolean by rememberSaveable { mutableStateOf(true) }
     var currentAt:Long? by remember { mutableStateOf(null) }
 
     val handler = Handler()
@@ -121,6 +122,11 @@ fun CoffeeDripTimerScreen(modifier: Modifier = Modifier) {
 
     fun cancelTimer() {
         startedAt = null
+        configurable = true
+    }
+
+    fun freezeConfiguration() {
+        configurable = false
     }
 
     val context = LocalContext.current
@@ -183,14 +189,14 @@ fun CoffeeDripTimerScreen(modifier: Modifier = Modifier) {
         ) {
             AmountOfBeansInput(
                 amount = amountOfBeans,
-                enabled = true,
+                enabled = configurable,
                 onValueChange = { updateAmount(it) },
                 modifier = Modifier.weight(0.5F)
             )
             Spacer(modifier = Modifier.width(8.dp))
             RoastOfBeansInput(
                 roast = roastOfBeans,
-                enabled = true,
+                enabled = configurable,
                 onValueChange = { updateRoast(it) },
                 modifier = Modifier.weight(0.5F)
             )
@@ -200,6 +206,8 @@ fun CoffeeDripTimerScreen(modifier: Modifier = Modifier) {
             roast = roastOfBeans,
             startedAt = startedAt,
             currentAt = currentAt,
+            configurable = configurable,
+            freezeConfiguration = { freezeConfiguration() },
             onComplete = { cancelTimer() },
             modifier = Modifier
                 .verticalScroll(rememberScrollState())
@@ -339,6 +347,8 @@ fun BrewStepsDisplay(
     roast: RoastOfBeans,
     startedAt: Long?,
     currentAt: Long?,
+    configurable: Boolean,
+    freezeConfiguration: () -> Unit,
     onComplete: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -388,6 +398,10 @@ fun BrewStepsDisplay(
                 current = true
             } else {
                 remaining = 0L
+            }
+
+            if (current && i > 0 && configurable) {
+              freezeConfiguration()
             }
 
             val foregroundColor = if (!current) {
