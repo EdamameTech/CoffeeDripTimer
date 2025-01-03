@@ -96,14 +96,6 @@ fun CoffeeDripTimerScreen(modifier: Modifier = Modifier) {
     var startedAt:Long? by rememberSaveable { mutableStateOf(null) }
     var currentAt:Long? by remember { mutableStateOf(null) }
 
-    fun updateAmount(amount: String) {
-        amountOfBeans = amount
-    }
-
-    fun updateRoast(roast: RoastOfBeans) {
-        roastOfBeans = roast
-    }
-
     val handler = Handler()
     val updater = object: Runnable {
         override fun run() {
@@ -137,22 +129,24 @@ fun CoffeeDripTimerScreen(modifier: Modifier = Modifier) {
         val nSteps = brewSteps[roastOfBeans]?.size ?: 0
         for ((i, s) in (brewSteps[roastOfBeans] ?: arrayOf<BrewStepTypes>()).withIndex()) {
             targetAmount += s.step.waterAmountFactor * beans
-            val message = String.format(
-                getString(context,
-                    if (i == 0) {
-                        R.string.timer_amount_format_first
-                    } else if (i < nSteps - 1) {
-                        R.string.timer_amount_format_wait
-                    } else {
-                        R.string.timer_amount_format_done
-                    }
-                ),
-                targetAmount
-            )
-            if (i == 0) {
-                TimerNotification(context).showTimerNotification(message)
-            } else {
-                scheduleTimerNotification(context, notifyAt, i, message)
+            if (notifyAt >= System.currentTimeMillis()) {
+                val message = String.format(
+                    getString(context,
+                        if (i == 0) {
+                            R.string.timer_amount_format_first
+                        } else if (i < nSteps - 1) {
+                            R.string.timer_amount_format_wait
+                        } else {
+                            R.string.timer_amount_format_done
+                        }
+                    ),
+                    targetAmount
+                )
+                if (i == 0) {
+                    TimerNotification(context).showTimerNotification(message)
+                } else {
+                    scheduleTimerNotification(context, notifyAt, i, message)
+                }
             }
             notifyAt += s.step.waitDurationFactor * waitDurationUnit
         }
@@ -160,6 +154,22 @@ fun CoffeeDripTimerScreen(modifier: Modifier = Modifier) {
 
     fun cancelNotifications() {
         cancelTimerNotification(context, 1, maxBrewSteps - 1)
+    }
+
+    fun updateAmount(amount: String) {
+        amountOfBeans = amount
+        if (startedAt != null) {
+            cancelNotifications()
+            scheduleNotifications()
+        }
+    }
+
+    fun updateRoast(roast: RoastOfBeans) {
+        roastOfBeans = roast
+        if (startedAt != null) {
+            cancelNotifications()
+            scheduleNotifications()
+        }
     }
 
     Column(
@@ -171,14 +181,14 @@ fun CoffeeDripTimerScreen(modifier: Modifier = Modifier) {
         ) {
             AmountOfBeansInput(
                 amount = amountOfBeans,
-                enabled = (startedAt == null),
+                enabled = true,
                 onValueChange = { updateAmount(it) },
                 modifier = Modifier.weight(0.5F)
             )
             Spacer(modifier = Modifier.width(8.dp))
             RoastOfBeansInput(
                 roast = roastOfBeans,
-                enabled = (startedAt == null),
+                enabled = true,
                 onValueChange = { updateRoast(it) },
                 modifier = Modifier.weight(0.5F)
             )
