@@ -21,7 +21,7 @@ Copyright 2024 by Green Soybean Technologies, under [MIT License](LICENSE).
 1. Remove unreferenced resources and debug logs.
 1. Update `android.defaultConfig.versionCode` and `...versionName` in `app/build.gradle.kts`.
 1. Test things on debug build, generate screenshots if necessary.
-1. Build - Generate Signed App Bundle / APK... and select release build.
+1. Build - Generate Signed App Bundle or APK... and select release build.
 1. Rename the signed app bundle `app/release/app-release.aab` with the version, i.e., `X.Y.aab`.
 1. Upload the signed app bundle to developer console, wait for quick checks to complete.
 1. Upload screenshots if necessary
