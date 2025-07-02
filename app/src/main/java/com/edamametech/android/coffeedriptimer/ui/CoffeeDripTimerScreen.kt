@@ -1,4 +1,5 @@
 import android.os.Handler
+import android.os.Looper
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -92,14 +93,14 @@ fun toDoubleOrZero(input: String): Double {
 }
 
 @Composable
-fun CoffeeDripTimerScreen(modifier: Modifier = Modifier) {
+fun CoffeeDripTimerScreen() {
     var amountOfBeans by rememberSaveable { mutableStateOf("10") }
     var roastOfBeans by rememberSaveable { mutableStateOf(RoastOfBeans.DARK) }
     var startedAt:Long? by rememberSaveable { mutableStateOf(null) }
     var configurable:Boolean by rememberSaveable { mutableStateOf(true) }
     var currentAt:Long? by remember { mutableStateOf(null) }
 
-    val handler = Handler()
+    val handler = Handler(Looper.getMainLooper())
     val updater = object: Runnable {
         override fun run() {
             if (startedAt != null) {
