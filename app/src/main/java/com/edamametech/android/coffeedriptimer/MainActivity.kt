@@ -10,7 +10,7 @@ import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.Box
+import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.material3.MaterialTheme
@@ -22,6 +22,7 @@ import com.edamametech.android.coffeedriptimer.ui.theme.CoffeeDripTimerTheme
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val name = getString(R.string.timer_channel_name)
@@ -59,10 +60,10 @@ class MainActivity : ComponentActivity() {
         }
 
         setContent {
-            Box(Modifier.safeDrawingPadding()) {
-                CoffeeDripTimerTheme {
+            CoffeeDripTimerTheme {
+                Surface(color = MaterialTheme.colorScheme.background) {
                     Surface(
-                        modifier = Modifier.fillMaxSize(),
+                        modifier = Modifier.safeDrawingPadding().fillMaxSize(),
                         color = MaterialTheme.colorScheme.background
                     ) {
                         CoffeeDripTimerScreen()
