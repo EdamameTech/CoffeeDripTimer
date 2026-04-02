@@ -61,6 +61,7 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             CoffeeDripTimerTheme {
+                // Outer Surface is to set background color in device top and bottom bars
                 Surface(color = MaterialTheme.colorScheme.background) {
                     Surface(
                         modifier = Modifier.safeDrawingPadding().fillMaxSize(),
