@@ -63,6 +63,8 @@ const val waitDurationUnit = 60000L
 /* in msec, TODO: 60000L (1 minute) for release or e.g. 5000L for debug */
 const val lastStepHighlightDuration = 5000L
 /* 5 seconds */
+const val configurableDurationFactor = 0.5
+/* 30 seconds */
 
 enum class BrewStepTypes(val step: BrewStep) {
     SHORT(BrewStep(5.0, 2)),
@@ -353,6 +355,10 @@ fun BrewStepsDisplay(
     onComplete: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    if (startedAt != null && currentAt != null && configurable && currentAt - startedAt > configurableDurationFactor * waitDurationUnit) {
+        freezeConfiguration()
+    }
+
     Column(
         modifier = modifier
     ) {
@@ -399,10 +405,6 @@ fun BrewStepsDisplay(
                 current = true
             } else {
                 remaining = 0L
-            }
-
-            if (current && i > 0 && configurable) {
-              freezeConfiguration()
             }
 
             val foregroundColor = if (!current) {
