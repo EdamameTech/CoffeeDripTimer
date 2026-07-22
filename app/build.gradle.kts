@@ -5,14 +5,14 @@ plugins {
 
 android {
     namespace = "com.edamametech.android.coffeedriptimer"
-    compileSdk = 35
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "com.edamametech.android.coffeedriptimer"
         minSdk = 24
-        targetSdk = 35
-        versionCode = 11
-        versionName = "1.3.2"
+        targetSdk = 36
+        versionCode = 12
+        versionName = "1.4"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
